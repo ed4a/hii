@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanji Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 50px;
+        }
+        #game-container {
+            background-color: white;
+            border: 2px solid #ccc;
+            padding: 20px;
+            display: inline-block;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #kanji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+        .option {
+            display: block;
+            margin: 10px;
+            padding: 10px;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .option:hover {
+            background-color: #ccc;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="kanji">木</div> <!-- Kanji Character -->
+        <div class="option" onclick="checkAnswer('tree')">Tree</div>
+        <div class="option" onclick="checkAnswer('fire')">Fire</div>
+        <div class="option" onclick="checkAnswer('water')">Water</div>
+        <div class="option" onclick="checkAnswer('mountain')">Mountain</div>
+
+        <div id="result"></div>
+        <button onclick="nextQuestion()">Next Kanji</button>
+    </div>
+
+    <script>
+        const kanjiList = [
+            { kanji: '木', answer: 'tree', options: ['tree', 'fire', 'water', 'mountain'] },
+            { kanji: '火', answer: 'fire', options: ['water', 'fire', 'tree', 'earth'] },
+            { kanji: '水', answer: 'water', options: ['water', 'mountain', 'fire', 'tree'] },
+            { kanji: '山', answer: 'mountain', options: ['earth', 'mountain', 'tree', 'water'] }
+        ];
+
+        let currentQuestion = 0;
+
+        function loadQuestion() {
+            const question = kanjiList[currentQuestion];
+            document.getElementById('kanji').innerText = question.kanji;
+            const options = document.querySelectorAll('.option');
+            options.forEach((option, index) => {
+                option.innerText = question.options[index];
+                option.onclick = () => checkAnswer(question.options[index]);
+            });
+            document.getElementById('result').innerText = '';
+        }
+
+        function checkAnswer(answer) {
+            const question = kanjiList[currentQuestion];
+            if (answer === question.answer) {
+                document.getElementById('result').innerText = 'Correct!';
+            } else {
+                document.getElementById('result').innerText = 'Wrong! Try again.';
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion = (currentQuestion + 1) % kanjiList.length;
+            loadQuestion();
+        }
+
+        window.onload = loadQuestion;
+    </script>
+
+</body>
+</html>
